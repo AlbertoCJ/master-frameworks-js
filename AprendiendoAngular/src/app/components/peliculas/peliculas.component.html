@@ -7,8 +7,14 @@
                 Pelicula favorita
             </h2>
             <h5>
-                {{ favorita.title }}
+                {{ favorita.title | uppercase }}
             </h5>
+            <h5>
+                {{ favorita.year | espar}}
+            </h5>
+            <h5>
+                    {{ fecha | date: 'dd/MM/yyyy' }}
+                </h5>
         </div>
         <div id="articles" *ngIf="peliculas">
             <div *ngFor="let pelicula of peliculas;">

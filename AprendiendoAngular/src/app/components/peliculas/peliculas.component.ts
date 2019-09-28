@@ -10,6 +10,7 @@ export class PeliculasComponent implements OnInit {
 
   public peliculas: Pelicula[];
   public favorita: Pelicula;
+  public fecha: any;
 
   constructor() { 
     this.peliculas = [
@@ -18,6 +19,7 @@ export class PeliculasComponent implements OnInit {
       new Pelicula('Batman vs Superman', 2015, 'https://static2.diariouno.com.ar/media/2019/04/avengers-endgame-poster-square-crop-700x674.jpg'),
       new Pelicula('Iron man', 2011, 'https://static2.diariouno.com.ar/media/2019/04/avengers-endgame-poster-square-crop-700x674.jpg'),
     ];
+    this.fecha = new Date(2020, 8, 12);
   }
 
   ngOnInit() {
