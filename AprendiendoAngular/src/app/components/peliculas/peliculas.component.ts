@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Pelicula } from '../../models/pelicula';
+import { PeliculaService } from '../../services/pelicula.service';
 
 @Component({
   selector: 'app-peliculas',
   templateUrl: './peliculas.component.html',
-  styleUrls: ['./peliculas.component.css']
+  styleUrls: ['./peliculas.component.css'],
+  providers: [PeliculaService]
 })
 export class PeliculasComponent implements OnInit {
 
@@ -12,13 +14,10 @@ export class PeliculasComponent implements OnInit {
   public favorita: Pelicula;
   public fecha: any;
 
-  constructor() { 
-    this.peliculas = [
-      new Pelicula('Spiderman 4', 2019, 'https://static2.diariouno.com.ar/media/2019/04/avengers-endgame-poster-square-crop-700x674.jpg'),
-      new Pelicula('Los vengadores', 2018, 'https://static2.diariouno.com.ar/media/2019/04/avengers-endgame-poster-square-crop-700x674.jpg'),
-      new Pelicula('Batman vs Superman', 2015, 'https://static2.diariouno.com.ar/media/2019/04/avengers-endgame-poster-square-crop-700x674.jpg'),
-      new Pelicula('Iron man', 2011, 'https://static2.diariouno.com.ar/media/2019/04/avengers-endgame-poster-square-crop-700x674.jpg'),
-    ];
+  constructor(
+    private _peliculaService: PeliculaService
+  ) { 
+    this.peliculas = this._peliculaService.getPeliculas()
     this.fecha = new Date(2020, 8, 12);
   }
 
