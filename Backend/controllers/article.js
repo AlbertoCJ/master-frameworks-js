@@ -47,6 +47,9 @@ var controller = {
             article.title = params.title;
             article.content = params.content;
             article.image = null;
+            if (params.image) {
+                article.image = params.image;
+            }
 
             // Guardar el articulo
             article.save((err, articleStored) => {
@@ -141,10 +144,10 @@ var controller = {
         var params = req.body;
 
         // Validar los datos
-        try{
+        try {
             var validate_title = !validator.isEmpty(params.title);
             var validate_content = !validator.isEmpty(params.content);
-        }catch(err){
+        } catch (err) {
             return res.status(200).send({
                 status: 'error',
                 message: 'Faltan datos por enviar !!!'
@@ -153,7 +156,7 @@ var controller = {
 
         if (validate_title && validate_content) {
             // find and update
-            Article.findOneAndUpdate({_id: articleId}, params, {new: true}, (err, articleUpdated) => {
+            Article.findOneAndUpdate({ _id: articleId }, params, { new: true }, (err, articleUpdated) => {
                 if (err) {
                     return res.status(500).send({
                         status: 'error',
@@ -187,7 +190,7 @@ var controller = {
         var articleId = req.params.id;
 
         // Find and delete
-        Article.findOneAndDelete({_id: articleId}, (err, articleRemoved) => {
+        Article.findOneAndDelete({ _id: articleId }, (err, articleRemoved) => {
             if (err) {
                 return res.status(500).send({
                     status: 'error',
@@ -231,7 +234,7 @@ var controller = {
         // Comprobar la extensión, solo imagenes, si es valida borrar el archivo
         if (file_ext != 'png' && file_ext != 'jpg' && file_ext != 'jpeg' && file_ext != 'gif') {
             // Borrar el archivo subido
-            fs.unlink(file_path, (err)=>{
+            fs.unlink(file_path, (err) => {
                 return res.status(200).send({
                     status: 'error',
                     message: 'La extensión de la imagen no es válida !!!'
@@ -240,27 +243,35 @@ var controller = {
         } else {
             // Si todo es valido
             var articleId = req.params.id;
-            // Buscar el articulo, asignarle el nombre de la imagen y actualizarlo
-            Article.findOneAndUpdate({_id: articleId}, {image: file_name}, {new: true}, (err, articleUpdated) => {
 
-                if (err || !articleUpdated) {
-                    return res.status(500).send({
-                        status: 'error',
-                        message: 'Error al guardar la imagen de articulo !!!'
+            if (articleId) {
+                // Buscar el articulo, asignarle el nombre de la imagen y actualizarlo
+                Article.findOneAndUpdate({ _id: articleId }, { image: file_name }, { new: true }, (err, articleUpdated) => {
+
+                    if (err || !articleUpdated) {
+                        return res.status(500).send({
+                            status: 'error',
+                            message: 'Error al guardar la imagen de articulo !!!'
+                        });
+                    }
+                    return res.status(200).send({
+                        status: 'success',
+                        article: articleUpdated
                     });
-                }
+                });
+            } else {
                 return res.status(200).send({
                     status: 'success',
-                    article: articleUpdated
+                    image: file_name
                 });
-            });
+            }
         }
     },
 
     getImage: (req, res) => {
         var file = req.params.image;
         var path_file = './upload/articles/' + file;
-        fs.exists(path_file, (exist) =>{
+        fs.exists(path_file, (exist) => {
             if (exist) {
                 return res.sendFile(path.resolve(path_file));
             } else {
@@ -276,29 +287,31 @@ var controller = {
         // Sacar el string a buscar
         var searchString = req.params.search;
         // Find or
-        Article.find({ "$or": [
-            {"title": { "$regex": searchString, "$options": "i" }},
-            {"content": { "$regex": searchString, "$options": "i" }}
-        ]})
-        .sort([['date', 'descending']])
-        .exec((err, articles) => {
-            if (err) {
-                return res.status(500).send({
-                    status: 'error',
-                    message: 'Error en la petición'
+        Article.find({
+            "$or": [
+                { "title": { "$regex": searchString, "$options": "i" } },
+                { "content": { "$regex": searchString, "$options": "i" } }
+            ]
+        })
+            .sort([['date', 'descending']])
+            .exec((err, articles) => {
+                if (err) {
+                    return res.status(500).send({
+                        status: 'error',
+                        message: 'Error en la petición'
+                    });
+                }
+                if (!articles || articles.length <= 0) {
+                    return res.status(404).send({
+                        status: 'error',
+                        message: 'No hay articulos que coincidan con tu busqueda !!!'
+                    });
+                }
+                return res.status(200).send({
+                    status: 'success',
+                    articles
                 });
-            }
-            if (!articles || articles.length <= 0) {
-                return res.status(404).send({
-                    status: 'error',
-                    message: 'No hay articulos que coincidan con tu busqueda !!!'
-                });
-            }
-            return res.status(200).send({
-                status: 'success',
-                articles
             });
-        });
     }
 } // end controller
 
