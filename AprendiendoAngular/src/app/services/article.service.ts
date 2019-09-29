@@ -15,11 +15,15 @@ export class ArticleService{
         this.url = Global.url;
     }
 
-    prueba(){
-        return 'Soy servicio articulo';
+    getArticles(last: any = null):Observable<any>{
+        var articles = 'articles';
+        if (last != null) {
+            var articles = 'articles/true';
+        }
+        return this._http.get(this.url + articles);
     }
 
-    getArticles():Observable<any>{
-        return this._http.get(this.url+'articles');
+    getArticle(articleId):Observable<any>{
+        return this._http.get(this.url+'article/'+articleId);
     }
 }

@@ -75,9 +75,9 @@ var controller = {
 
         var query = Article.find({});
 
-        var num = req.params.num;
-        if (num || num != undefined) {
-            query.limit(Number(num));
+        var last = req.params.last;
+        if (last || last != undefined) {
+            query.limit(5);
         }
 
         // Find
