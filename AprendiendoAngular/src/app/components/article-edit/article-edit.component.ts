@@ -3,6 +3,7 @@ import { Article } from '../../models/article';
 import { ArticleService } from '../../services/article.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Global } from '../../services/global';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-article-edit',
@@ -61,13 +62,28 @@ export class ArticleEditComponent implements OnInit {
         if (response.status == 'success') {
           this.status = 'success';
           this.article = response.article;
+
+          // Alerta
+          Swal.fire({
+            position: 'center',
+            type: 'success',
+            title: 'Artículo editado!!',
+            showConfirmButton: false,
+            timer: 2000
+          });
+          
           this._router.navigate(['/blog/articulo', this.article._id]);
         } else {
           this.status = 'error';
         }
       },
       err => {
-        console.log(err);
+        // Alerta
+        Swal.fire({
+          position: 'center',
+          type: 'error',
+          title: 'Error al editar artículo!!'
+        });
         this.status = 'error';
       }
     );

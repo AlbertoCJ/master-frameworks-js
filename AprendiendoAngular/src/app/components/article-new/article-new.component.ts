@@ -3,6 +3,7 @@ import { Article } from '../../models/article';
 import { ArticleService } from '../../services/article.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Global } from '../../services/global';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-article-new',
@@ -44,7 +45,7 @@ export class ArticleNewComponent implements OnInit {
     private _articleService: ArticleService
   ) {
     this.article = new Article('', '', '', null, null);
-    this.page_title = 'Crear articulo';
+    this.page_title = 'Crear artículo';
   }
 
   ngOnInit() {
@@ -56,13 +57,28 @@ export class ArticleNewComponent implements OnInit {
         if (response.status == 'success') {
           this.status = 'success';
           this.article = response.article;
+
+          // Alerta
+          Swal.fire({
+            position: 'center',
+            type: 'success',
+            title: 'Artículo creado!!',
+            showConfirmButton: false,
+            timer: 2000
+          });
+
           this._router.navigate(['/blog']);
         } else {
           this.status = 'error';
         }
       },
       err => {
-        console.log(err);
+         // Alerta
+         Swal.fire({
+          position: 'center',
+          type: 'error',
+          title: 'Error al crear artículo!!'
+        });
         this.status = 'error';
       }
     );
