@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import logo from '../assets/images/react.svg';
+import { NavLink } from 'react-router-dom';
 
 class Header extends Component {
 
@@ -8,7 +9,7 @@ class Header extends Component {
             <header id="header">
                 <div className="center">
                     {/* LOGO */}
-                <div id="logo">
+                    <div id="logo">
                         <img src={logo} className="app-logo" alt="Logotipo" />
                         <span id="brand">
                             <strong>Curso</strong>React
@@ -16,28 +17,28 @@ class Header extends Component {
                     </div>
 
                     {/* MENU */}
-                <nav id="menu">
+                    <nav id="menu">
                         <ul>
                             <li>
-                                <a href="index.html">Inicio</a>
+                                <NavLink to="/home" activeClassName="active">Inicio</NavLink>
                             </li>
                             <li>
-                                <a href="blog.html">Blog</a>
+                                <NavLink to="/blog" activeClassName="active">Blog</NavLink>
                             </li>
                             <li>
-                                <a href="formulario.html">Formulario</a>
+                                <NavLink to="/formulario" activeClassName="active">Formulario</NavLink>
                             </li>
                             <li>
-                                <a href="#">Pagina 1</a>
+                                <   NavLink to="/pagina-1" activeClassName="active">Peliculas</NavLink>
                             </li>
                             <li>
-                                <a href="#">Pagina 2</a>
+                                <NavLink to="/pruebas/Alberto" activeClassName="active">Pagina 2</NavLink>
                             </li>
                         </ul>
                     </nav>
 
                     {/*LIMPIAR FLOTADOS*/}
-                <div className="clearfix"></div>
+                    <div className="clearfix"></div>
                 </div>
             </header>
         );
