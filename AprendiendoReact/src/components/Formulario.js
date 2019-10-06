@@ -79,7 +79,7 @@ class Formulario extends Component {
 
                         <div className="clearfix"></div>
 
-                        <input type="submit" value="Enviar" class="btn btn-success" />
+                        <input type="submit" value="Enviar" className="btn btn-success" />
 
                     </form>
                 </div>

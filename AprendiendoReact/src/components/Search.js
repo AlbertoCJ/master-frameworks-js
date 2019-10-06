@@ -3,15 +3,18 @@ import Slider from './Slider';
 import Sidebar from './Sidebar';
 import Articles from './Articles';
 
-class Blog extends Component {
+class Search extends Component {
     render() {
+
+        var searched = this.props.match.params.search;
+
         return (
             <div id="home">
-                <Slider title="Blog" size="slider-small"></Slider>
+                <Slider title={'Busqueda: ' + searched} size="slider-small"></Slider>
                 <div className="center">
                     <div id="content">
                         {/**  Listado de articulos que vendran de la api */}
-                        <Articles></Articles>
+                        <Articles search={searched}></Articles>
                     </div>
                 </div>
                 <Sidebar blog="true"></Sidebar>
@@ -20,4 +23,4 @@ class Blog extends Component {
     }
 }
 
-export default Blog;
+export default Search;
